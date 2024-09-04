@@ -29,6 +29,13 @@ export class Trie {
       if (!next) {
         next = new TrieNode(label, value);
         curr.c.set(label, next);
+      } else if (next.c.size === 1 && !next.e) {
+        // Merge nodes with single children
+        const [childLabel, childNode] = Array.from(next.c.entries())[0];
+        next.l += `.${childLabel}`;
+        next.c = childNode.c;
+        next.e = childNode.e;
+        next.v = childNode.v;
       }
       curr = next;
     }
@@ -65,8 +72,8 @@ export class Trie {
             .filter(([, child]) => child !== null) // Filter out empty children
         );
         const nodeData: Record<string, unknown> = {
-          l: node.l,
-          v: node.v,
+          l: node.l !== '' ? node.l : undefined, // Only include if not default
+          v: node.v !== '' ? node.v : undefined, // Only include if not default
         };
         if (Object.keys(children).length > 0) {
           nodeData.c = children;
@@ -79,7 +86,7 @@ export class Trie {
       return nodes[path.join('.')];
     };
 
-    return JSON.stringify({root: traverse(this.root, [])}, (_key, value) =>
+    return JSON.stringify({r: traverse(this.root, [])}, (_key, value) =>
       value === undefined ? null : value
     );
   }
