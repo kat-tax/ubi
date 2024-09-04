@@ -1,0 +1,7 @@
+{
+  "imports": {
+    "@fleek-platform/sdk": "https://esm.sh/@fleek-platform/sdk@2.1.5",
+    "@xtao-org/jsonhilo": "https://esm.sh/@xtao-org/jsonhilo@0.3.7",
+    "cheerio": "https://esm.sh/cheerio@1.0.0"
+  }
+}

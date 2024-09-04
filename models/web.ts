@@ -63,7 +63,7 @@ export interface WebAppManifest {
    *
    * @see https://w3c.github.io/manifest/#categories-member
    */
-  categories?: WebAppCategory[] | undefined;
+  categories?: Category[] | undefined;
 
   /**
    * The `iarc_rating_id` member is a `string` that represents the International Age Rating Coalition (IARC)
@@ -166,65 +166,6 @@ export interface WebAppManifest {
    */
   launch_handler?: LaunchHandler | undefined;
 }
-
-export type WebAppCategory =
-  | "beauty"
-  | "books"
-  | "books & reference"
-  | "business"
-  | "cars"
-  | "dating"
-  | "design"
-  | "developer"
-  | "developer tools"
-  | "development"
-  | "education"
-  | "entertainment"
-  | "events"
-  | "fashion"
-  | "finance"
-  | "fitness"
-  | "food"
-  | "fundraising"
-  | "games"
-  | "government"
-  | "graphics"
-  | "graphics & design"
-  | "health"
-  | "health & fitness"
-  | "kids"
-  | "lifestyle"
-  | "magazines"
-  | "medical"
-  | "multimedia"
-  | "multimedia design"
-  | "music"
-  | "navigation"
-  | "network"
-  | "networking"
-  | "news"
-  | "parenting"
-  | "personalization"
-  | "pets"
-  | "photo"
-  | "photo & video"
-  | "politics"
-  | "productivity"
-  | "reference"
-  | "security"
-  | "shopping"
-  | "social"
-  | "social networking"
-  | "sports"
-  | "transportation"
-  | "travel"
-  | "utilities"
-  | "video"
-  | "weather";
-
-export type TextDirectionType = "ltr" | "rtl" | "auto";
-export type DisplayModeType = "fullscreen" | "standalone" | "minimal-ui" | "browser";
-export type LaunchHandlerClientModeType = "auto" | "focus-existing" | "navigate-existing" | "navigate-new";
 
 /**
  * Each `ImageResource` represents an image that is used as part of a web application, suitable to use in
@@ -389,3 +330,79 @@ export interface LaunchHandler {
    */
   client_mode: LaunchHandlerClientModeType | LaunchHandlerClientModeType[];
 }
+
+export type TextDirectionType =
+  | "ltr"
+  | "rtl"
+  | "auto";
+
+export type DisplayModeType =
+  | "fullscreen"
+  | "standalone"
+  | "minimal-ui"
+  | "browser";
+
+export type LaunchHandlerClientModeType =
+  | "auto"
+  | "focus-existing"
+  | "navigate-existing"
+  | "navigate-new";
+
+/**
+ * A `category` is a string that represents a category of a web application.
+ * @see https://w3c.github.io/manifest/#screenshots-member
+ */ 
+export type Category =
+  | "beauty"
+  | "books"
+  | "books & reference"
+  | "business"
+  | "cars"
+  | "dating"
+  | "design"
+  | "developer"
+  | "developer tools"
+  | "development"
+  | "education"
+  | "entertainment"
+  | "events"
+  | "fashion"
+  | "finance"
+  | "fitness"
+  | "food"
+  | "fundraising"
+  | "games"
+  | "government"
+  | "graphics"
+  | "graphics & design"
+  | "health"
+  | "health & fitness"
+  | "kids"
+  | "lifestyle"
+  | "magazines"
+  | "medical"
+  | "multimedia"
+  | "multimedia design"
+  | "music"
+  | "navigation"
+  | "network"
+  | "networking"
+  | "news"
+  | "parenting"
+  | "personalization"
+  | "pets"
+  | "photo"
+  | "photo & video"
+  | "politics"
+  | "productivity"
+  | "reference"
+  | "security"
+  | "shopping"
+  | "social"
+  | "social networking"
+  | "sports"
+  | "transportation"
+  | "travel"
+  | "utilities"
+  | "video"
+  | "weather";

@@ -1,0 +1,8 @@
+# General
+.env
+.DS_Store
+
+# Data
+us.json
+trie.json
+trie.json.zip

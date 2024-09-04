@@ -1,4 +1,4 @@
-export interface ShodanResult {
+export interface Banner {
   asn?: Asn;
   amqp?: Amqp;
   cpe?: Cpe;
