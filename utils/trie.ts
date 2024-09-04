@@ -1,13 +1,25 @@
 export class TrieNode {
-  l: string;
-  v: string;
-  e: boolean;
-  c: Map<string, TrieNode>;
-  constructor(label = '', value = '') {
+  l: string; // label
+  v: string; // value
+  f: number; // flags (bitwise: 1 for endpoint)
+  c: Map<string, TrieNode>; // children
+  constructor(label = '', value = '', flags = 0) {
     this.l = label;
     this.v = value;
-    this.e = false;
+    this.f = flags;
     this.c = new Map();
+  }
+
+  isEndpoint(): boolean {
+    return (this.f & 1) !== 0;
+  }
+
+  setEndpoint(isEndpoint: boolean): void {
+    if (isEndpoint) {
+      this.f |= 1;
+    } else {
+      this.f &= ~1;
+    }
   }
 }
 
@@ -29,18 +41,18 @@ export class Trie {
       if (!next) {
         next = new TrieNode(label, value);
         curr.c.set(label, next);
-      } else if (next.c.size === 1 && !next.e) {
+      } else if (next.c.size === 1 && !next.isEndpoint()) {
         // Merge nodes with single children
         const [childLabel, childNode] = Array.from(next.c.entries())[0];
         next.l += `.${childLabel}`;
         next.c = childNode.c;
-        next.e = childNode.e;
+        next.setEndpoint(childNode.isEndpoint());
         next.v = childNode.v;
       }
       curr = next;
     }
     curr.v = value;
-    curr.e = true;
+    curr.setEndpoint(true);
   }
 
   lookup(id: string): string | undefined {
@@ -74,12 +86,10 @@ export class Trie {
         const nodeData: Record<string, unknown> = {
           l: node.l !== '' ? node.l : undefined, // Only include if not default
           v: node.v !== '' ? node.v : undefined, // Only include if not default
+          f: node.f !== 0 ? node.f : undefined, // Only include if not default
         };
         if (Object.keys(children).length > 0) {
           nodeData.c = children;
-        }
-        if (node.e) {
-          nodeData.e = true;
         }
         nodes[path.join('.')] = nodeData;
       }
@@ -96,7 +106,7 @@ export class Trie {
       key === 'children' ? Object.fromEntries(value) : value
     );
 
-    const root = new TrieNode(data.root.label, data.root.value);
+    const root = new TrieNode(data.root.label, data.root.value, data.root.flags);
     const nodes = new Map<string, TrieNode>();
     nodes.set('', root);
 
@@ -105,7 +115,7 @@ export class Trie {
       const currNode = nodes.get(currPath) || new TrieNode(path[path.length - 1], '');
       nodes.set(currPath, currNode);
 
-      if (parent.e) {
+      if (parent.isEndpoint()) {
         parent.c.set(path[path.length - 1], currNode);
       } else {
         parent.c.set(path[path.length - 1], build(path, parent));
@@ -137,7 +147,7 @@ export class Trie {
   }
 
   private _index(node: TrieNode, id: string, ids: string[]): void {
-    if (node.e && ids.length < this.results)
+    if (node.isEndpoint() && ids.length < this.results)
       ids.push(id);
     if (ids.length >= this.results)
       return;
